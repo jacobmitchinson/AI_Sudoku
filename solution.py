@@ -55,25 +55,35 @@ def naked_twins(values):
     # compare each unit value with each value in the row / column
     # if a twin is found, remove those values from the row / column
 
-    for units in unit_list:
-        units_values = []
+    for row in unit_list:
+        row_values = []
 
-        for unit in units:
-            units_values.append(values[unit])
+        for unit in row:
+            row_values.append(values[unit])
 
         twin_values = []
 
-        for unit_value in units_values:
-            if units_values.count(unit_value) == 2 and len(unit_value) == 2 and twin_values.count(unit_value) == 0:
-                twin_values.append(unit_value)
+        for row_value in row_values:
+            if row_values.count(row_value) == 2 and len(row_value) == 2 and twin_values.count(row_value) == 0:
+                twin_values.append(row_value)
 
         for twin_value in twin_values:
-            for unit in units:
+            print(twin_value)
+            for unit in row:
+                print(unit)
                 unit_value = values[unit]
                 if unit_value != twin_value:
                     for digit in twin_value:
-                        values[unit] = unit_value.replace(digit,'')
+                        unit_value = unit_value.replace(digit,'')
+                values[unit] = unit_value
+
     return values
+
+
+
+
+
+
 
 
 def grid_values(grid):
