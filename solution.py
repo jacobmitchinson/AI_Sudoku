@@ -70,13 +70,6 @@ def naked_twins(values):
 
     return values
 
-
-
-
-
-
-
-
 def grid_values(grid):
     """
     Convert grid into a dict of {square: char} with '123456789' for empties.
