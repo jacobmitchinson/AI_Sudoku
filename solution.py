@@ -48,29 +48,20 @@ def naked_twins(values):
     # Find all instances of naked twins
     # Eliminate the naked twins as possibilities for their peers
 
-    # go through all peers and find boxes that have the same 2 values
-    # this is wrong
-    # simpler method: go through each row and each column... find twins.. remove values from other boxes
-    # how do we find the twins?
-    # compare each unit value with each value in the row / column
-    # if a twin is found, remove those values from the row / column
+    for units in unit_list:
+        units_values = []
 
-    for row in unit_list:
-        row_values = []
-
-        for unit in row:
-            row_values.append(values[unit])
+        for unit in units:
+            units_values.append(values[unit])
 
         twin_values = []
 
-        for row_value in row_values:
-            if row_values.count(row_value) == 2 and len(row_value) == 2 and twin_values.count(row_value) == 0:
-                twin_values.append(row_value)
+        for unit_value in units_values:
+            if units_values.count(unit_value) == 2 and len(unit_value) == 2 and twin_values.count(unit_value) == 0:
+                twin_values.append(unit_value)
 
         for twin_value in twin_values:
-            print(twin_value)
-            for unit in row:
-                print(unit)
+            for unit in units:
                 unit_value = values[unit]
                 if unit_value != twin_value:
                     for digit in twin_value:
