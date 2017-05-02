@@ -126,6 +126,8 @@ def reduce_puzzle(values):
         solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
         # Use the Eliminate Strategy
         values = eliminate(values)
+        # Use the Naked Twins Strategy
+        values = naked_twins(values)
         # Use the Only Choice Strategy
         values = only_choice(values)
         # Check how many boxes have a determined value, to compare
