@@ -3,13 +3,18 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: We do the following:
 
-We identify the twins contained in each unit and then apply the constraint: no other box can contain the twin values. Therefore, we eliminate any boxes in the same unit as the twins which contain the twin values.
+A: The naked twins problem occurs when we have exactly two boxes within the same unit with the same two values. We know that other boxes in their unit cannot contain these values. For example if box F1 and F2
+both have the values 1 and 2 then this places a constraint on the rest of the units. That is, we can
+remove values 1 and 2 from the rest of the unit since we know the values can only be located in F1 and F2. This is an example of constraint propagation where we use a constraint to help us eliminate choices and
+reduce the overall search space. We were already using only choice and eliminate for constraint propagation but solving the naked twins problem further reduces the search space.
+
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: We find the boxes for the diagonal units and apply the eliminate(), naked_twins(), and only_choice() methods.
+
+A: The diagonal sudoku problem occurs when we have diagonal units running through the centre of the board
+along with our regular board. In the same way that we applied constraint propagation within the naked twins problem, we can apply this within the diagonal sudoku problem to reduce the overall search space. We know that having diagonal units creates further constraints on board. We apply the same strategy that we do for a normal Sudoku when approaching this problem. We eliminate the units from peers that have a single solved box. We call only choice to find values where there is only a single choice for the unit. We apply the naked twins strategy as above.
 
 ### Install
 
