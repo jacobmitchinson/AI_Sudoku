@@ -2,6 +2,7 @@ import pdb
 
 assignments = []
 
+# Global values
 rows = 'ABCDEFGHI'
 cols = '123456789'
 
@@ -14,12 +15,15 @@ boxes = cross(rows, cols)
 row_units = [cross(r, cols) for r in rows]
 column_units = [cross(rows, c) for c in cols]
 square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
+# get both diagonal rows
 first_diagonal = [rs+str(idx + 1) for idx, rs in enumerate(rows)]
 second_diagonal = [rs+str(idx + 1) for idx, rs in enumerate(rows[::-1])]
+# append rows to array
 diagonal_units = [first_diagonal, second_diagonal]
 unit_list = row_units + column_units + square_units + diagonal_units
 units = dict((s, [u for u in unit_list if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
+
 
 def assign_value(values, box, value):
     """
@@ -44,22 +48,26 @@ def naked_twins(values):
     Returns:
         the values dictionary with the naked twins eliminated from peers.
     """
-
     # Find all instances of naked twins
     # Eliminate the naked twins as possibilities for their peers
 
+    # iterate through the units list
     for units in unit_list:
         units_values = []
 
+        # find the unit values
         for unit in units:
             units_values.append(values[unit])
 
+        # create array of twin values
         twin_values = []
 
+        # find the twin values
         for unit_value in units_values:
             if units_values.count(unit_value) == 2 and len(unit_value) == 2 and twin_values.count(unit_value) == 0:
                 twin_values.append(unit_value)
 
+        # iterate through the twin values and remove these values from the units
         for twin_value in twin_values:
             for unit in units:
                 unit_value = values[unit]
@@ -104,6 +112,19 @@ def display(values):
     return
 
 def eliminate(values):
+    """
+        Iterate through all boxes to find boxes that have peers. Eliminate
+        those boxes from their peers.
+
+        Parameters
+        ----------
+        values(dict): The Sudoku in dictionary form
+
+
+        Returns
+        -------
+        A dict of the Sudoku with eliminated values
+    """
     solved_values = [box for box in values.keys() if len(values[box]) == 1]
     for box in solved_values:
         digit = values[box]
@@ -112,6 +133,15 @@ def eliminate(values):
     return values
 
 def only_choice(values):
+    """
+        Iterate through all units and find boxes where only a single unit
+        is able to fit in the box. Return the new value with this digit
+        applied to the box.
+
+        Parameters
+        ----------
+        values(dict): The Sudoku in dictionary form
+    """
     for unit in unit_list:
         for digit in '123456789':
             dplaces = [box for box in unit if digit in values[box]]
@@ -120,6 +150,18 @@ def only_choice(values):
     return values
 
 def reduce_puzzle(values):
+    """
+        Apply eliminate, naked_twins and only_choice until either the Sudoku
+        is solved or these no longer do anything.
+
+        Parameters
+        ----------
+        values(dict): The Sudoku in dictionary form
+
+        Returns
+        -------
+        A dict of the solved Sudoku
+    """
     stalled = False
     while not stalled:
         # Check how many boxes have a determined value
@@ -149,7 +191,7 @@ def search(values):
         return values ## Solved!
     # Choose one of the unfilled squares with the fewest possibilities
     n,s = min((len(values[s]), s) for s in boxes if len(values[s]) > 1)
-    # Now use recurrence to solve each one of the resulting sudokus, and
+    # Now use recurrence to solve each one of the resulting sudokus
     for value in values[s]:
         new_sudoku = values.copy()
         new_sudoku[s] = value
